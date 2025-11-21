@@ -1,0 +1,322 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "902326f5-de36-4416-bf78-f89524292e92",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Requirement already satisfied: google-generativeai in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (0.8.5)\n",
+      "Requirement already satisfied: google-ai-generativelanguage==0.6.15 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-generativeai) (0.6.15)\n",
+      "Requirement already satisfied: google-api-core in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-generativeai) (2.28.1)\n",
+      "Requirement already satisfied: google-api-python-client in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-generativeai) (2.187.0)\n",
+      "Requirement already satisfied: google-auth>=2.15.0 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-generativeai) (2.43.0)\n",
+      "Requirement already satisfied: protobuf in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-generativeai) (5.29.5)\n",
+      "Requirement already satisfied: pydantic in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from google-generativeai) (2.11.7)\n",
+      "Requirement already satisfied: tqdm in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-generativeai) (4.67.1)\n",
+      "Requirement already satisfied: typing-extensions in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from google-generativeai) (4.15.0)\n",
+      "Requirement already satisfied: proto-plus<2.0.0dev,>=1.22.3 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-ai-generativelanguage==0.6.15->google-generativeai) (1.26.1)\n",
+      "Requirement already satisfied: googleapis-common-protos<2.0.0,>=1.56.2 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-api-core->google-generativeai) (1.72.0)\n",
+      "Requirement already satisfied: requests<3.0.0,>=2.18.0 in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from google-api-core->google-generativeai) (2.32.5)\n",
+      "Requirement already satisfied: grpcio<2.0.0,>=1.33.2 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-ai-generativelanguage==0.6.15->google-generativeai) (1.76.0)\n",
+      "Requirement already satisfied: grpcio-status<2.0.0,>=1.33.2 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-ai-generativelanguage==0.6.15->google-generativeai) (1.71.2)\n",
+      "Requirement already satisfied: cachetools<7.0,>=2.0.0 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-auth>=2.15.0->google-generativeai) (6.2.2)\n",
+      "Requirement already satisfied: pyasn1-modules>=0.2.1 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-auth>=2.15.0->google-generativeai) (0.4.2)\n",
+      "Requirement already satisfied: rsa<5,>=3.1.4 in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from google-auth>=2.15.0->google-generativeai) (4.9.1)\n",
+      "Requirement already satisfied: charset_normalizer<4,>=2 in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from requests<3.0.0,>=2.18.0->google-api-core->google-generativeai) (3.4.3)\n",
+      "Requirement already satisfied: idna<4,>=2.5 in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from requests<3.0.0,>=2.18.0->google-api-core->google-generativeai) (3.10)\n",
+      "Requirement already satisfied: urllib3<3,>=1.21.1 in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from requests<3.0.0,>=2.18.0->google-api-core->google-generativeai) (2.5.0)\n",
+      "Requirement already satisfied: certifi>=2017.4.17 in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from requests<3.0.0,>=2.18.0->google-api-core->google-generativeai) (2025.8.3)\n",
+      "Requirement already satisfied: pyasn1>=0.1.3 in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from rsa<5,>=3.1.4->google-auth>=2.15.0->google-generativeai) (0.6.1)\n",
+      "Requirement already satisfied: httplib2<1.0.0,>=0.19.0 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-api-python-client->google-generativeai) (0.31.0)\n",
+      "Requirement already satisfied: google-auth-httplib2<1.0.0,>=0.2.0 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-api-python-client->google-generativeai) (0.2.1)\n",
+      "Requirement already satisfied: uritemplate<5,>=3.0.1 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from google-api-python-client->google-generativeai) (4.2.0)\n",
+      "Requirement already satisfied: pyparsing<4,>=3.0.4 in c:\\users\\endsem 2025\\appdata\\local\\programs\\python\\python313\\lib\\site-packages (from httplib2<1.0.0,>=0.19.0->google-api-python-client->google-generativeai) (3.2.5)\n",
+      "Requirement already satisfied: annotated-types>=0.6.0 in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from pydantic->google-generativeai) (0.7.0)\n",
+      "Requirement already satisfied: pydantic-core==2.33.2 in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from pydantic->google-generativeai) (2.33.2)\n",
+      "Requirement already satisfied: typing-inspection>=0.4.0 in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from pydantic->google-generativeai) (0.4.1)\n",
+      "Requirement already satisfied: colorama in c:\\users\\endsem 2025\\appdata\\roaming\\python\\python313\\site-packages (from tqdm->google-generativeai) (0.4.6)\n",
+      "Note: you may need to restart the kernel to use updated packages.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "[notice] A new release of pip is available: 25.2 -> 25.3\n",
+      "[notice] To update, run: python.exe -m pip install --upgrade pip\n"
+     ]
+    }
+   ],
+   "source": [
+    "pip install google-generativeai"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "1174366c-ea7d-40a9-83bf-0c4fc0af5917",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Dhiva Chatbot Activated 🤖\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "You:  hi who is dhiva\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Dhiva: Without more context, it's difficult to know exactly who you're referring to. \"Dhiva\" could be a name, and there are several possibilities:\n",
+      "\n",
+      "*   **It could be a given name:** It might be someone's personal name, like a first name or a nickname.\n",
+      "*   **It could be a surname:** It could also be someone's last name.\n",
+      "\n",
+      "To help me understand who you're asking about, could you provide more information? For example:\n",
+      "\n",
+      "*   Where did you hear the name \"Dhiva\"?\n",
+      "*   Do you know anything else about this person (e.g., their profession, location, or any other details)?\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "You:  what is machinelearning\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Dhiva: Machine learning (ML) is a subfield of artificial intelligence (AI) that focuses on the development of systems that can **learn from data** without being explicitly programmed.  Instead of writing specific rules for a machine to follow, you feed it data, and the machine uses statistical techniques to identify patterns, make predictions, and improve its performance over time.\n",
+      "\n",
+      "Here's a breakdown of the key concepts:\n",
+      "\n",
+      "*   **Learning from Data:**  ML algorithms are designed to extract knowledge from data. This data can be in various forms: images, text, numbers, audio, and more. The more data the algorithm has access to, the better it can generally learn.\n",
+      "\n",
+      "*   **Without Explicit Programming:**  This is a crucial difference from traditional programming.  In traditional programming, you tell the computer exactly what to do, step-by-step. In ML, you provide the data and the algorithm figures out the steps needed to achieve a specific goal (e.g., predict customer churn, classify images, recommend products).\n",
+      "\n",
+      "*   **Statistical Techniques:**  ML relies heavily on statistics, probability, and linear algebra.  Algorithms use these mathematical tools to find relationships, make generalizations, and quantify uncertainty within the data.\n",
+      "\n",
+      "*   **Patterns and Predictions:**  The goal of ML is often to discover hidden patterns in data that can be used to make predictions about future events, classify data into categories, or generate new data.\n",
+      "\n",
+      "*   **Improve Performance Over Time:**  A core aspect of ML is that the system's performance improves as it is exposed to more data.  This improvement is often measured by accuracy, precision, recall, or other relevant metrics.\n",
+      "\n",
+      "**Different Types of Machine Learning:**\n",
+      "\n",
+      "Machine learning algorithms are typically categorized into the following types, based on the type of learning signal or feedback available to the learning system:\n",
+      "\n",
+      "*   **Supervised Learning:** The algorithm learns from labeled data, meaning the data is already tagged with the correct answer. The goal is to learn a mapping function that can predict the label for new, unseen data.\n",
+      "    *   *Examples:* Image classification (identifying objects in pictures), spam detection (classifying emails as spam or not spam), regression (predicting house prices).\n",
+      "\n",
+      "*   **Unsupervised Learning:** The algorithm learns from unlabeled data, meaning there are no pre-defined labels. The goal is to discover hidden patterns and structures in the data.\n",
+      "    *   *Examples:* Clustering (grouping customers based on their purchase history), dimensionality reduction (reducing the number of variables while preserving important information), anomaly detection (identifying unusual data points).\n",
+      "\n",
+      "*   **Reinforcement Learning:** The algorithm learns by interacting with an environment and receiving rewards or penalties for its actions. The goal is to learn a policy that maximizes the cumulative reward over time.\n",
+      "    *   *Examples:* Training a robot to walk, playing games (like chess or Go), optimizing advertising campaigns.\n",
+      "\n",
+      "*   **Semi-Supervised Learning:**  A combination of supervised and unsupervised learning where the algorithm learns from a mix of labeled and unlabeled data. This is useful when labeling data is expensive or time-consuming.\n",
+      "\n",
+      "**Examples of Machine Learning in Everyday Life:**\n",
+      "\n",
+      "*   **Recommendation systems:**  Netflix, Amazon, YouTube use ML to suggest movies, products, and videos that you might like.\n",
+      "*   **Spam filters:**  Email providers use ML to identify and filter out spam emails.\n",
+      "*   **Virtual assistants:**  Siri, Alexa, and Google Assistant use ML to understand your voice commands and provide relevant information.\n",
+      "*   **Self-driving cars:**  ML is used to perceive the environment, make decisions, and control the vehicle.\n",
+      "*   **Fraud detection:**  Banks and credit card companies use ML to detect fraudulent transactions.\n",
+      "*   **Medical diagnosis:**  ML can assist doctors in diagnosing diseases by analyzing medical images and patient data.\n",
+      "\n",
+      "**Key benefits of Machine Learning:**\n",
+      "\n",
+      "*   **Automation:** Automating tasks that require human intelligence, such as data entry, customer service, and decision-making.\n",
+      "*   **Improved Accuracy:** ML algorithms can often achieve higher accuracy than humans in certain tasks, especially when dealing with large datasets.\n",
+      "*   **Scalability:** ML systems can handle large volumes of data and scale to meet growing demands.\n",
+      "*   **Personalization:**  ML can be used to personalize experiences for individuals, such as recommending products or services that are relevant to their interests.\n",
+      "*   **New Insights:** ML can uncover hidden patterns and insights in data that humans might miss.\n",
+      "\n",
+      "**In summary, machine learning is a powerful tool that enables computers to learn from data and make predictions or decisions without being explicitly programmed.  It's a rapidly evolving field with applications in a wide range of industries and has the potential to transform many aspects of our lives.**\n",
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "You:  exit\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Dhiva Kelumbu 👋\n"
+     ]
+    }
+   ],
+   "source": [
+    "import google.generativeai as genai\n",
+    "genai.configure(api_key=\"AIzaSyCv6gIZQ4LvoR5ZGFV7EfUgVzhIo8N5U7U\")\n",
+    "model = genai.GenerativeModel(\"gemini-2.0-flash\")\n",
+    "def chat():\n",
+    "    print(\"Dhiva Chatbot Activated \")\n",
+    "    while True:\n",
+    "        user_input = input(\"You: \")\n",
+    "        if user_input.lower() == \"exit\":\n",
+    "            print(\"Dhiva Kelumbu \")\n",
+    "            break\n",
+    "        response = model.generate_content(user_input)\n",
+    "        print(\"Dhiva:\", response.text)\n",
+    "chat()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "e85a6735-667e-492a-af2b-2b02e4257fe3",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Dhiva Chatbot Activated \n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "You:  what is machine learning\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Dhiva: Machine learning (ML) is a field of computer science that allows computers to learn from data without being explicitly programmed.  Instead of writing specific rules, ML algorithms use data to identify patterns, make predictions, and improve their performance over time.  Think of it as training a computer to do something by showing it lots of examples instead of telling it exactly how to do it.\n",
+      "\n",
+      "Here's a breakdown of the key concepts:\n",
+      "\n",
+      "*   **Learning from Data:** This is the core idea. ML algorithms analyze data to identify patterns, relationships, and trends. The more data they have, the better they usually become at making accurate predictions.\n",
+      "\n",
+      "*   **Algorithms:** These are the specific sets of instructions that the computer follows to learn from the data. There are many different types of ML algorithms, each suited for different types of problems. Some common ones include:\n",
+      "    *   **Supervised learning:** The algorithm is trained on labeled data, meaning the data is already tagged with the correct answer.  The algorithm learns to predict the label for new, unseen data.  Examples: image classification, spam detection, regression.\n",
+      "    *   **Unsupervised learning:** The algorithm is trained on unlabeled data. It aims to discover hidden patterns or structures within the data. Examples: clustering, dimensionality reduction, anomaly detection.\n",
+      "    *   **Reinforcement learning:** The algorithm learns by interacting with an environment and receiving rewards or penalties for its actions. It learns to optimize its actions to maximize its rewards. Examples: game playing, robotics, resource management.\n",
+      "\n",
+      "*   **Predictions:** Once trained, an ML model can use what it has learned to make predictions about new data. For example, it might predict whether an email is spam, what the price of a house will be, or what product a customer is likely to buy.\n",
+      "\n",
+      "*   **Improvement Over Time:**  ML models are designed to continuously improve their performance as they are exposed to more data. This can involve adjusting the model's parameters or even changing the algorithm altogether.\n",
+      "\n",
+      "**In simpler terms:**\n",
+      "\n",
+      "Imagine you want to teach a computer to recognize pictures of cats.\n",
+      "\n",
+      "*   **Without machine learning (traditional programming):** You would have to manually write code to describe the characteristics of a cat (e.g., pointy ears, whiskers, fur). This would be very difficult and likely not very accurate, as cats come in all shapes and sizes.\n",
+      "\n",
+      "*   **With machine learning:** You would feed the computer a large number of cat pictures (labeled \"cat\") and a large number of pictures of things that are *not* cats (labeled \"not cat\"). The ML algorithm would analyze these images and learn to identify the features that distinguish cats from other objects. Over time, the computer would become better and better at recognizing cats, even if it had never seen that particular cat before.\n",
+      "\n",
+      "**Key components involved:**\n",
+      "\n",
+      "*   **Data:** High-quality, relevant data is crucial for training successful ML models.\n",
+      "*   **Features:** These are the attributes or characteristics of the data that the algorithm uses to learn.  Feature engineering is the process of selecting, transforming, and creating features to improve model performance.\n",
+      "*   **Model:** This is the mathematical representation of the learned patterns in the data.\n",
+      "*   **Training:** The process of feeding the data to the algorithm and allowing it to learn the patterns.\n",
+      "*   **Evaluation:** Assessing the performance of the model on new, unseen data to see how well it generalizes.\n",
+      "*   **Deployment:** Putting the trained model into use to make predictions in the real world.\n",
+      "\n",
+      "**Applications of Machine Learning:**\n",
+      "\n",
+      "Machine learning is used in a wide range of applications, including:\n",
+      "\n",
+      "*   **Image recognition:** Identifying objects in images, like faces, cars, or animals.\n",
+      "*   **Natural language processing:** Understanding and generating human language, like chatbots, machine translation, and sentiment analysis.\n",
+      "*   **Recommendation systems:** Suggesting products, movies, or music based on user preferences.\n",
+      "*   **Fraud detection:** Identifying fraudulent transactions.\n",
+      "*   **Medical diagnosis:** Assisting doctors in diagnosing diseases.\n",
+      "*   **Self-driving cars:** Enabling vehicles to navigate and drive autonomously.\n",
+      "*   **Financial modeling:** Predicting stock prices and managing risk.\n",
+      "*   **Spam filtering:** Identifying and blocking unwanted emails.\n",
+      "*   **Personalized advertising:** Showing users ads that are relevant to their interests.\n",
+      "\n",
+      "**In conclusion,** machine learning is a powerful tool that allows computers to learn from data and make predictions. It is revolutionizing many industries and has the potential to solve some of the world's most challenging problems.\n",
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "You:  exit\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Dhiva Kelumbu \n"
+     ]
+    }
+   ],
+   "source": [
+    "import google.generativeai as genai\n",
+    "genai.configure(api_key=\"AIzaSyCv6gIZQ4LvoR5ZGFV7EfUgVzhIo8N5U7U\")\n",
+    "model = genai.GenerativeModel(\"gemini-2.0-flash\")\n",
+    "def chat():\n",
+    "    print(\"Dhiva Chatbot Activated \")\n",
+    "    while True:\n",
+    "        user_input = input(\"You: \")\n",
+    "        if user_input.lower() == \"exit\":\n",
+    "            print(\"Dhiva Kelumbu \")\n",
+    "            break\n",
+    "        response = model.generate_content(user_input)\n",
+    "        print(\"Dhiva:\", response.text)\n",
+    "chat()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8ac8c9b8-b2f5-4046-b570-9c760d6fa540",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.9"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
